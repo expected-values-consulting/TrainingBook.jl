@@ -14,6 +14,12 @@ module TrainingBook
             """
         end
 
+        function generate_module_input()
+            return """
+            \\input{TrainingBook/all_modules.tex}
+            """
+        end
+
 
         function generate_input(module_number::Int)
             # Format the module number with leading zeros
@@ -32,8 +38,13 @@ module TrainingBook
             join([generate_chapter_input(), module_list])
         end
 
+        function generate_module_one_file(ttd::TrainingTableData)
+            join([generate_chapter_input(), generate_module_input()])
+        end
+
         function write_training_book_list_to_file(filename::String,ttd::TrainingTableData)
-            table = generate_module_list(ttd)
+            #table = generate_module_list(ttd) # Maybe keep 'all_modules.tex' as the file name
+            table = generate_module_one_file(ttd)
             open(filename, "w") do file
                 write(file, table)
             end
